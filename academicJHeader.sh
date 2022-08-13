@@ -1,25 +1,22 @@
-# Args --- The order matters!
-# r: Repository
-# c: Person Code
-# a: Add Course
-# p: Grade file path
-# g: Grade
-read_flags(){
-    while getopts r:c:a:g:p: flag
-    do
-        case "${flag}" in
-            r) REPO=${OPTARG};;
-            c) PERSON_CODE=${OPTARG};;
-            a) COURSE=${OPTARG};;
-            g) MY_GRADE=${OPTARG};;
-            p) GRADES_PATH=${OPTARG};;
-        esac
-    done
-}
+#!/bin/bash
 
+CONFIG_FOLDER=$HOME/.academicJ
+CONFIG_FILE=$CONFIG_FOLDER/academicJConfing.txt
+CONTENT_FOLDER=$CONFIG_FOLDER/content
+CONTENT_MAIN=$CONTENT_FOLDER/main.md
+PRINT_STATS=printStats.py
+FOLDER_PRESENT=0
+CONFIG_PRESENT=0
+CONTENT_PRESENT=0
+PERSON_CODE="nil"
+REPO="nil"
+COURSE="nil"
+GRADES_PATH="nil"
+MY_GRADE="nil"
 
 # Looking for academicJ folder & config file
 checkEnvironment(){
+    #echo "checkEnvironment"
     for file in $HOME/.*
     do
         if [[ $file == $CONFIG_FOLDER ]]; then
@@ -76,11 +73,11 @@ buildConfigFolder(){
     python3 initContent.py
 }
 
-computeStats(){
-    python3 getStats.py
+buildNewStatsFile(){
+    touch $CONTENT_FOLDER/$COURSE.md && python3 $PRINT_STATS $COURSE $GRADES_PATH $PERSON_CODE > $MY_GRADE
 }
 
 # Parses the grades file, updates the main.md file and appends a stats.md file
-appendNewContent(){
-    touch $CONTENT_FOLDER/$COURSE.md && python3 $TABLE_APPEND $COURSE $PERSON_CODE
+appendNewGrade(){
+    python3 appendGrade.py $COURSE $MY_GRADE $REPO
 }
