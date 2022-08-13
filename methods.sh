@@ -76,7 +76,11 @@ buildConfigFolder(){
     python3 initContent.py
 }
 
+computeStats(){
+    python3 getStats.py
+}
+
 # Parses the grades file, updates the main.md file and appends a stats.md file
 appendNewContent(){
-    touch $CONTENT_FOLDER/$COURSE.md && python3 $TABLE_BUILDER $COURSE $PERSON_CODE $
+    touch $CONTENT_FOLDER/$COURSE.md && python3 $TABLE_APPEND $COURSE $PERSON_CODE
 }

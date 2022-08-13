@@ -42,5 +42,5 @@ printf "$PERSON_CODE\n$REPO\n" > $CONFIG_FILE
 
 if [[ $GRADES_PATH != "nil" ]] && [[ $COURSE != "nil" ]] && [[ $REPO != "nil" ]]; then
     #python3 $CONFIG_FOLDER/$TABLE_BUILDER
-    appendNewContent
+    computeStats && appendNewContent
 fi
