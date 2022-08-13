@@ -2,31 +2,33 @@
 
 CONFIG_FOLDER=$HOME/.academicJ
 CONFIG_FILE=$CONFIG_FOLDER/academicJConfing.txt
+CONTENT_FOLDER=$CONFIG_FOLDER/content
+TABLE_BUILDER=tableBuilder.py
 FOLDER_PRESENT=0
 CONFIG_PRESENT=0
+CONTENT_PRESENT=0
 PERSON_CODE="nil"
 REPO="nil"
 COURSE="nil"
 GRADES_PATH="nil"
 MY_GRADE="nil"
 
-# Args
+# Args --- The order matters!
 # r: Repository
 # c: Person Code
 # a: Add Course
 # p: Grade file path
 # g: Grade
-while getopts r:c:a:p:g flag
+while getopts r:c:a:g:p: flag
 do
     case "${flag}" in
         r) REPO=${OPTARG};;
         c) PERSON_CODE=${OPTARG};;
         a) COURSE=${OPTARG};;
-        p) GRADES_PATH=${OPTARG};;
         g) MY_GRADE=${OPTARG};;
+        p) GRADES_PATH=${OPTARG};;
     esac
 done
-
 
 # Looking for academicJ folder & config file
 for file in $HOME/.*
@@ -38,14 +40,16 @@ do
             if [[ $file == $CONFIG_FILE ]]; then
                 CONFIG_PRESENT=1
             fi
+            if [[ $file == $CONTENT_FOLDER ]]; then
+                CONTENT_PRESENT=1
+            fi
         done
         break;
     fi
 done
 
-
-# Updates PERSON_CODE and REPO if a config file is found.
-# Creates one otherwise.
+# If the config file is present PERSON_CODE and REPO are stored.
+# Otherwise a empty config file gets created.
 if [[ $CONFIG_PRESENT == 1 ]]; then
     cd $CONFIG_FOLDER
     N=0;
@@ -61,18 +65,34 @@ if [[ $CONFIG_PRESENT == 1 ]]; then
 
 elif [[ $FOLDER_PRESENT == 1 ]] && [[ $CONFIG_PRESENT == 0 ]]; then
     touch $CONFIG_FILE
-else
+fi
+
+
+# If the content folder is not present for some reason, it gets created.
+# If a repo has been already provided, it tries to pull the present work
+# In case nothing is present (likely after first installation), the whole environment gets created.
+
+#           MUST BE TESTED
+
+if [[ $FOLDER_PRESENT == 1 ]] && [[ $CONTENT_PRESENT == 0 ]]; then
+    mkdir $CONTENT_FOLDER
+    if [[ $REPO != "nil" ]]; then
+        git init
+        rm .DStore
+        git pull $REPO
+    fi
+elif [[ $FOLDER_PRESENT == 0 ]]; then
     mkdir $CONFIG_FOLDER
+    mkdir $CONTENT_FOLDER
     touch $CONFIG_FILE
 fi
+
 
 # Updating config file
 printf "$PERSON_CODE\n$REPO\n" > $CONFIG_FILE
 
-#
 if [[ $GRADES_PATH != "nil" ]] && [[ $COURSE != "nil" ]] && [[ $REPO != "nil" ]]; then
-    cd $HOME
-    rm -r .academicJ_tmp
-    mkdir .academicJ_tmp
-    cd .academicJ_tmp
+    #python3 $CONFIG_FOLDER/$TABLE_BUILDER
+    touch $CONFIG_FOLDER/$(COURSE).md
+    python3 $TABLE_BUILDER
 fi
