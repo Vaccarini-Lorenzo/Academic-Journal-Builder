@@ -1,7 +1,15 @@
 #!/bin/bash
 
-CONFIG_FOLDER=$HOME/.academicJ
-CONFIG_FILE=$CONFIG_FOLDER/academicJConfing.txt
+ARGUMENT_LIST=(
+  "repo"
+  "code"
+  "path"
+  "add"
+  "help"
+)
+
+CONFIG_FOLDER=$HOME/.aJournal
+CONFIG_FILE=$CONFIG_FOLDER/aJournalConfig.txt
 
 CONTENT_FOLDER=$CONFIG_FOLDER/content
 CONTENT_MAIN=$CONTENT_FOLDER/README.md
@@ -24,9 +32,25 @@ COURSE="nil"
 GRADES_PATH="nil"
 MY_GRADE="nil"
 
+printHelp(){
+    printf "\n\n"
+    printf "        Hello there! This tool is pretty simple: once installed you need to specify your person code\n"
+    printf "        (8 ciphers PoliMI ID) and your repository through the flags '-c' (code) and '-r' (repository)\n"
+    printf "        example:\n"
+    printf "            journal.sh -c 1065**** -r 'https://github.com/Vaccarini-Lorenzo/academicJournal.git'\n\n"
+    printf "        Once both your person code and your repo url are saved, you can start adding grades through\n"
+    printf "        the flags '-n' (name of the course) and '-p' (path of the grades list)\n"
+    printf "        example:\n"
+    printf "            journal.sh -n 'Advanced Computer Architecture' -p 'Users/lorenzo/Desktop/ACAGrades.txt'\n\n"
+    printf "        At this point, it's all done! Your files are now in your GitHub repository.\n\n"
+    printf "        In case of merge conflicts, just reset your local folder through the '-f' (force-reset) flag.\n"
+    printf "        example:\n"
+    printf "            journal.sh -f\n\n"
+    printf "        ATTENTION: This way your local folder will be deleted and restored through a git pull.\n\n\n"
+}
+
 # Looking for academicJ folder & config file
 checkEnvironment(){
-    #echo "checkEnvironment"
     for file in $HOME/.*
     do
         if [[ $file == $CONFIG_FOLDER ]]; then
@@ -95,13 +119,18 @@ addRemoteOrigin(){
 
 buildNewStatsFile(){
     echo "creating the new stats file..."
-    python3 $PRINT_STATS $COURSE $GRADES_PATH $PERSON_CODE > $MY_GRADE
+    python3 $PRINT_STATS "$COURSE" $GRADES_PATH $PERSON_CODE #> $MY_GRADE
 }
 
 # Parses the grades file, updates the main.md file and appends a stats.md file
 appendNewGrade(){
     echo "append the new grade..."
-    python3 $APPEND_GRADE $COURSE $MY_GRADE $REPO
+    python3 $APPEND_GRADE "$COURSE" 30 $REPO
+}
+
+pullFromGithub(){
+    echo "pulling from github..."
+    d $CONTENT_FOLDER && git pull origin master
 }
 
 pushToGithub(){

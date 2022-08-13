@@ -1,8 +1,8 @@
 #!/bin/bash
 
-CONFIG_FOLDER=$HOME/.academicJ
-CONFIG_FILE=$CONFIG_FOLDER/academicJConfing.txt
+CONFIG_FOLDER=$HOME/.aJournal
+CONFIG_FILE=$CONFIG_FOLDER/aJournalConfig.txt
 BIN=/usr/local/bin/
 
 echo "$PWD"
-./academicJ.sh && mv academicJ.sh $BIN && mv academicJHeader.sh $BIN && mv initContent.py $CONFIG_FOLDER && mv computeStats.py $CONFIG_FOLDER && mv printStats.py $CONFIG_FOLDER && mv appendGrade.py $CONFIG_FOLDER && academicJ.sh -i init
+./journal.sh && mv journal.sh $BIN && mv aJournalHeader.sh $BIN && mv initContent.py $CONFIG_FOLDER && mv computeStats.py $CONFIG_FOLDER && mv printStats.py $CONFIG_FOLDER && mv appendGrade.py $CONFIG_FOLDER && journal.sh -i
