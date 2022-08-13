@@ -52,6 +52,11 @@ fi
 # Updating config file
 printf "$PERSON_CODE\n$REPO\n" > $CONFIG_FILE
 
-if [[ $GRADES_PATH != "nil" ]] && [[ $COURSE != "nil" ]] && [[ $REPO != "nil" ]]; then
+if [[ $GRADES_PATH != "nil" ]] && [[ $COURSE != "nil" ]]; then
+    if [[ $REPO == "nil" ]]; then
+         printf "You need to add a remote repository first.\nTry academicJ.sh -r <your_repository_link>"
+    else
+    addRemoteOrigin
     buildNewStatsFile && appendNewGrade
+    fi
 fi

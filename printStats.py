@@ -1,4 +1,5 @@
 import sys
+import os
 import computeStats
 
 END_POINT = "https://quickchart.io/"
@@ -8,8 +9,8 @@ API_DATA = ""
 
 
 # Temporary chdir. This file will be in .academicJ
-#os.chdir("/Users/lorenzo/.academicJ")
-#os.chdir("content")
+os.chdir("/Users/lorenzo/.academicJ/content")
+
 courseName = sys.argv[1]
 gradesFile = open(sys.argv[2])
 personCode = sys.argv[3]

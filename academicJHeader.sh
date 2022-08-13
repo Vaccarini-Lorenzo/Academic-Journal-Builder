@@ -3,11 +3,14 @@
 CONFIG_FOLDER=$HOME/.academicJ
 CONFIG_FILE=$CONFIG_FOLDER/academicJConfing.txt
 CONTENT_FOLDER=$CONFIG_FOLDER/content
-CONTENT_MAIN=$CONTENT_FOLDER/main.md
+CONTENT_MAIN=$CONTENT_FOLDER/README.md
 PRINT_STATS=printStats.py
 FOLDER_PRESENT=0
 CONFIG_PRESENT=0
 CONTENT_PRESENT=0
+REMOTE_ORIGIN_PRESENT=0
+REMOTE_ORIGIN_CONFIG=$CONTENT_FOLDER/.git/config
+REMOTE_ORIGIN_REGEX="url = .*.git"
 PERSON_CODE="nil"
 REPO="nil"
 COURSE="nil"
@@ -51,21 +54,17 @@ readConfigFile(){
 
 # Build the content folder
 buildContentFolder(){
+    echo "build the content folder..."
     mkdir $CONTENT_FOLDER
-    if [[ $REPO != "nil" ]]; then
-        echo "Initing git"
-        #git init
-        #git remote add origin $REPO
-        #rm .DStore
-        #git pull origin master
-    else
-        touch $CONTENT_MAIN
-        python3 initContent.py
-    fi
+    touch $CONTENT_MAIN
+    python3 initContent.py
+    echo "git init..."
+    cd $CONTENT_FOLDER && git init
 }
 
 # Build the config folder
 buildConfigFolder(){
+    echo "build the whole config folder..."
     mkdir $CONFIG_FOLDER
     mkdir $CONTENT_FOLDER
     touch $CONFIG_FILE
@@ -73,11 +72,32 @@ buildConfigFolder(){
     python3 initContent.py
 }
 
+addRemoteOrigin(){
+    while read -r line;
+    do
+        if [[ $line =~ $REMOTE_ORIGIN_REGEX ]]; then
+            echo "remote origin found..."
+            REMOTE_ORIGIN_PRESENT=1
+        fi
+    done < $REMOTE_ORIGIN_CONFIG
+    if [[ $REMOTE_ORIGIN_PRESENT == 0 ]]; then
+        echo "origin added..."
+        cd $CONTENT_FOLDER && git remote add origin $REPO
+    fi
+
+}
+
 buildNewStatsFile(){
-    touch $CONTENT_FOLDER/$COURSE.md && python3 $PRINT_STATS $COURSE $GRADES_PATH $PERSON_CODE > $MY_GRADE
+    echo "creating the new stats file..."
+    python3 $PRINT_STATS $COURSE $GRADES_PATH $PERSON_CODE > $MY_GRADE
 }
 
 # Parses the grades file, updates the main.md file and appends a stats.md file
 appendNewGrade(){
+    echo "append the new grade..."
     python3 appendGrade.py $COURSE $MY_GRADE $REPO
+}
+
+pushToGithub(){
+    echo "pushing to github..."
 }

@@ -1,8 +1,7 @@
 
 import os
 # Temporary chdir. This file will be in .academicJ
-os.chdir("/Users/lorenzo/.academicJ")
-os.chdir("content")
+os.chdir("/Users/lorenzo/.academicJ/content")
 
-mainFile = open("main.md", "w")
-mainFile.write("| Course | Grade | Stats | External link |\n:--- | :--- | :--- | :--- | ")
+mainFile = open("README.md", "w")
+mainFile.write("| Course | Grade | Stats | External link |\n:--- | :--- | :--- | :--- |\n")
