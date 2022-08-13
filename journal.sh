@@ -10,7 +10,7 @@
 # a: Add Course
 # p: Grade file path
 # i: Init (used in the installation phase)
-while getopts r:c:n:g:p:ih flag
+while getopts r:c:n:g:p:ihf flag
     do
         case "${flag}" in
             r) REPO=${OPTARG};;
@@ -23,6 +23,12 @@ while getopts r:c:n:g:p:ih flag
             exit 0
             ;;
             h) printHelp
+            exit 0
+            ;;
+            f) forceReset
+            exit 0
+            ;;
+            *) printHelp
             exit 0
             ;;
         esac

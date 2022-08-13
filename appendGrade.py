@@ -2,7 +2,7 @@ import sys
 import os
 
 # Temporary chdir. This file will be in .academicJ
-os.chdir("/Users/lorenzo/.academicJ/content")
+os.chdir("/Users/lorenzo/.aJournal/content")
 
 courseName = sys.argv[1]
 grade = sys.argv[2]

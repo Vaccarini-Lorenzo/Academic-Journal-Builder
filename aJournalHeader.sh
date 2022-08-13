@@ -41,11 +41,11 @@ printHelp(){
     printf "        Once both your person code and your repo url are saved, you can start adding grades through\n"
     printf "        the flags '-n' (name of the course) and '-p' (path of the grades list)\n"
     printf "        example:\n"
-    printf "            journal.sh -n 'Advanced Computer Architecture' -p 'Users/lorenzo/Desktop/ACAGrades.txt'\n\n"
+    printf "                    journal.sh -n 'Advanced Computer Architecture' -p 'Users/lorenzo/Desktop/ACAGrades.txt'\n\n"
     printf "        At this point, it's all done! Your files are now in your GitHub repository.\n\n"
     printf "        In case of merge conflicts, just reset your local folder through the '-f' (force-reset) flag.\n"
     printf "        example:\n"
-    printf "            journal.sh -f\n\n"
+    printf "                    journal.sh -f\n\n"
     printf "        ATTENTION: This way your local folder will be deleted and restored through a git pull.\n\n\n"
 }
 
@@ -103,16 +103,22 @@ buildConfigFolder(){
 }
 
 addRemoteOrigin(){
+    # Just in case the user messes up:
+    # If $REPO is nil it wont be possible to force the reset
+    readConfigFile
     while read -r line;
     do
         if [[ $line =~ $REMOTE_ORIGIN_REGEX ]]; then
             echo "remote origin found..."
             REMOTE_ORIGIN_PRESENT=1
+            break;
         fi
     done < $REMOTE_ORIGIN_CONFIG
     if [[ $REMOTE_ORIGIN_PRESENT == 0 ]]; then
         echo "remote origin not found: origin added..."
         cd $CONTENT_FOLDER && git remote add origin $REPO
+        git remote -v
+        printf "\n\n"
     fi
 
 }
@@ -130,10 +136,16 @@ appendNewGrade(){
 
 pullFromGithub(){
     echo "pulling from github..."
-    d $CONTENT_FOLDER && git pull origin master
+    cd $CONTENT_FOLDER &&git pull origin master
 }
 
 pushToGithub(){
     echo "pushing to github..."
     cd $CONTENT_FOLDER && git add . && git commit -m "new grade: $COURSE" && git push origin master
+}
+
+forceReset(){
+    echo "forcing reset..."
+    cd $CONTENT_FOLDER && rm -r .git | cd $CONTENT_FOLDER && rm *
+    git init && addRemoteOrigin && pullFromGithub
 }
