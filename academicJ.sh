@@ -1,13 +1,25 @@
 #!/bin/bash
 
 
-# Importing variables
-. varHeader.sh
-#I Importing methods
-. methods.sh
+# Importing variables & methods
+. academicJHeader.sh
 
 # Read user flags
-read_flags
+# r: Repository
+# c: Person Code
+# a: Add Course
+# p: Grade file path
+# g: Grade
+while getopts r:c:a:g:p: flag
+    do
+        case "${flag}" in
+            r) REPO=${OPTARG};;
+            c) PERSON_CODE=${OPTARG};;
+            a) COURSE=${OPTARG};;
+            g) MY_GRADE=${OPTARG};;
+            p) GRADES_PATH=${OPTARG};;
+        esac
+    done
 
 # Checks if the environment is all set.
 # The following flags get set:
@@ -41,6 +53,5 @@ fi
 printf "$PERSON_CODE\n$REPO\n" > $CONFIG_FILE
 
 if [[ $GRADES_PATH != "nil" ]] && [[ $COURSE != "nil" ]] && [[ $REPO != "nil" ]]; then
-    #python3 $CONFIG_FOLDER/$TABLE_BUILDER
-    computeStats && appendNewContent
+    buildNewStatsFile && appendNewGrade
 fi

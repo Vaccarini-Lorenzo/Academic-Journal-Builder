@@ -1,15 +1,17 @@
 import os
 
 class stats:
-    def __init__(self, counters, percentages, average, averageIgnoringFailed, numStudents):
+    def __init__(self, counters, percentages, myGrade, top, average, averageIgnoringFailed, numStudents):
         self.counters = counters
         self.percentages = percentages
+        self.myGrade = myGrade
+        self.top = top
         self.average = average
         self. averageIgnoringFailed = averageIgnoringFailed
         self.numStudents = numStudents
 
 
-def getStats(gradesFile):
+def getStats(gradesFile, personCode):
     tmpFile = open("tmp.txt", "w")
 
     # Messy implementation, just for demo
@@ -31,6 +33,7 @@ def getStats(gradesFile):
     twentyNineCounter = 0
     thirtyCounter = 0
     thirtyLCounter = 0
+    myGrade = -1
 
     # Writing on a tmp file in order to not modify the grades file given by the user.
     for line in gradesFile.readlines():
@@ -46,6 +49,9 @@ def getStats(gradesFile):
 
     for line in tmpFile.readlines():
         l = line.split("\t")
+
+        if l[0] == personCode and l[1] != "RIMANDATO\n" and l[1] != "RIFIUTATO\n" and l[1] != "ASSENTE\n":
+            myGrade = l[1]
 
         if l[1] == "RIMANDATO\n":
             failCounter += 1
@@ -106,6 +112,17 @@ def getStats(gradesFile):
     thirtyCounter,
     thirtyLCounter]
 
+    betterThan = 0
+    if myGrade != -1:
+        if myGrade == "30 e Lode\n":
+            myGrade = 31
+        myGrade = int(myGrade)
+        for i, counter in enumerate(counters):
+            if(i + 17 < inputGrade):
+                betterThan += counter
+
+    top = round((1 - betterThan/numStudents) * 100, 3)
+
     percentages = []
 
     for counter in counters:
@@ -116,6 +133,6 @@ def getStats(gradesFile):
 
     averageIgnoringFailed = round((sum - 16 * failCounter)/(numStudents - failCounter), 3)
 
-    s = stats(counters, percentages, average, averageIgnoringFailed, numStudents)
+    s = stats(counters, percentages, myGrade, top, average, averageIgnoringFailed, numStudents)
 
     return s

@@ -12,9 +12,10 @@ API_DATA = ""
 #os.chdir("content")
 courseName = sys.argv[1]
 gradesFile = open(sys.argv[2])
+personCode = sys.argv[3]
 
 # Get num of students for each grade, average etc...
-stats = computeStats.getStats(gradesFile)
+stats = computeStats.getStats(gradesFile, personCode)
 
 statsFileName = courseName + "Stats.md"
 
@@ -53,22 +54,8 @@ for index, counter in enumerate(stats.counters):
 print("\nNumber of students = ", stats.numStudents)
 print("\nAverage = ", stats.average, "\n")
 print("Average (ignoring failed exams) = ", stats.averageIgnoringFailed, "\n")
-
-
-if (len(sys.argv) == 4):
-    inputGrade = 0
-    if(sys.argv[3] == "30L"):
-        inputGrade = 31
-    else:
-        inputGrade = int(sys.argv[2])
-
-    print("Personal grade: ", sys.argv[3], end = ' ---- ')
-    betterThan = 0
-    for i, counter in enumerate(stats.counters):
-        if(i + 17 < inputGrade):
-            betterThan += counter
-
-    print("Top ", round((1 - betterThan/stats.numStudents) * 100, 3), "%\n\n" )
+print("Personal grade: ", stats.myGrade, end = ' ---- ')
+print("Top ", stats.top , "%\n\n" )
 print("</pre>")
 
 apiString = END_POINT + "chart?c={" + CHART_TYPE + "data:{labels:[" + LABELS + "],datasets:[{label:'Number%20of%20students',data:[" + API_DATA + "]}]}}"

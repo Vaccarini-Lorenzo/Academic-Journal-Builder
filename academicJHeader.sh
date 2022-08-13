@@ -54,10 +54,10 @@ buildContentFolder(){
     mkdir $CONTENT_FOLDER
     if [[ $REPO != "nil" ]]; then
         echo "Initing git"
-        git init
-        git remote add origin $REPO
-        rm .DStore
-        git pull origin master
+        #git init
+        #git remote add origin $REPO
+        #rm .DStore
+        #git pull origin master
     else
         touch $CONTENT_MAIN
         python3 initContent.py
