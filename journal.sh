@@ -16,6 +16,7 @@ while getopts :-:r:c:n:g:p:ihf flag
             # Long flags
             -)
             case "${OPTARG}" in
+                undo) cd $CONTENT_FOLDER && chmod -R +w $CONTENT_FOLDER; rm -r *; git add . & git commit -m "reset" && git push origin master;;
                 repo) REPO="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 code) MATRICOLA_CODE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 name) COURSE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
@@ -30,7 +31,13 @@ while getopts :-:r:c:n:g:p:ihf flag
                     forceReset
                     exit 0;
                     ;;
-                remove-grade) echo "todo: remove instance";;
+                remove)
+                if [[ ${!OPTIND} == "" ]]; then
+                    echo "You need to specify the course name!"
+                else
+                    removeGrade ${!OPTIND}
+                fi
+                ;;
                 course-of-study) echo "todo: course of study"
 
             esac;;

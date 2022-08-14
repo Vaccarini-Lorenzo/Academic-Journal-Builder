@@ -13,11 +13,8 @@ CONTENT_FOLDER=home + "/.aJournal/content"
 os.chdir(CONTENT_FOLDER)
 
 courseName = sys.argv[1]
-print(courseName)
 gradesFile = open(sys.argv[2])
-print(gradesFile)
 matricolaCode = sys.argv[3]
-print(matricolaCode)
 
 # Get num of students for each grade, average etc...
 stats = computeStats.getStats(gradesFile, matricolaCode)

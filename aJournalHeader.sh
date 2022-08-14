@@ -6,6 +6,9 @@ ARGUMENT_LIST=(
   "path"
   "add"
   "help"
+  "remove"
+  "course-of-study"
+  "undo"
 )
 
 CONFIG_FOLDER=$HOME/.aJournal
@@ -17,6 +20,7 @@ CONTENT_MAIN=$CONTENT_FOLDER/README.md
 PRINT_STATS=$CONFIG_FOLDER/printStats.py
 APPEND_GRADE=$CONFIG_FOLDER/appendGrade.py
 INIT_CONTENT=$CONFIG_FOLDER/initContent.py
+REMOVE_GRADE=$CONFIG_FOLDER/removeGrade.py
 
 FOLDER_PRESENT=0
 CONFIG_PRESENT=0
@@ -40,9 +44,9 @@ printHelp(){
     printf "        Hello there! This tool is pretty simple: once installed you need to specify your matricola code\n"
     printf "        (6 ciphers PoliMI ID) and your repository through the flags '-c' or '--code' and '-r' or '--repo'\n"
     printf "        example:\n"
-    printf "                   journal.sh -c 1065**** -r 'https://github.com/Vaccarini-Lorenzo/academicJournal.git'\n"
+    printf "                   journal.sh -c ****** -r 'https://github.com/Vaccarini-Lorenzo/academicJournal.git'\n"
     printf "                                                    or\n"
-    printf "                 journal.sh --code 1065**** --repo 'https://github.com/Vaccarini-Lorenzo/academicJournal.git'\n\n"
+    printf "                 journal.sh --code ****** --repo 'https://github.com/Vaccarini-Lorenzo/academicJournal.git'\n\n"
 
     printf "        Once both your person code and your repo url are saved, you can start adding grades through the flags\n"
     printf "        '-n' or '--name' and '-p' or '--path' (path to the .txt file containing all the grades)\n"
@@ -55,7 +59,7 @@ printHelp(){
     printf "        To add your course of study to your Academic Journal just use the flag '--course-of-study'\n"
     printf "        example:\n"
     printf "                   journal.sh --course-of-study 'Computer Science & Engineering'\n\n"
-    printf "        If you want to remove a grade from your github page just use the '--remove-grade' flag\n"
+    printf "        If you want to remove a grade from your github page just use the '--remove' flag\n"
     printf "        example:\n"
     printf "                    journal.sh --remove-grade 'Advanced Computer Architecture'\n\n"
     printf "        In case of merge conflicts, just reset your local folder through the '-f' or '--force-reset' flag.\n"
@@ -169,4 +173,12 @@ forceReset(){
     echo "forcing reset..."
     cd $CONTENT_FOLDER && chmod -R +w $CONTENT_FOLDER && rm -r .*; cd $CONTENT_FOLDER && rm *
     git init --quiet && addRemoteOrigin && pullFromGithub
+}
+
+removeGrade(){
+    echo "removing grade..."
+    echo "$1"
+    cd $CONTENT_FOLDER && chmod -R +w $CONTENT_FOLDER && rm $1Stats.md
+    python3 $REMOVE_GRADE $1
+    pushToGithub && echo "$1 removed!"
 }

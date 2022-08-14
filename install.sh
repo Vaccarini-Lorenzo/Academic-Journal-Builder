@@ -9,3 +9,4 @@ mv initContent.py $CONFIG_FOLDER && journal.sh -i
 mv computeStats.py $CONFIG_FOLDER
 mv printStats.py $CONFIG_FOLDER
 mv appendGrade.py $CONFIG_FOLDER
+mv removeGrade.py $CONFIG_FOLDER
