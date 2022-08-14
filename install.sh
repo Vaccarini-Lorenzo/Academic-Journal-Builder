@@ -11,3 +11,4 @@ mv printStats.py $CONFIG_FOLDER
 mv appendGrade.py $CONFIG_FOLDER
 mv removeGrade.py $CONFIG_FOLDER
 mv updateAverage.py $CONFIG_FOLDER
+mv addDegree.py $CONFIG_FOLDER

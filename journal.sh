@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # Importing variables & methods
 . aJournalHeader.sh
 
@@ -16,7 +15,8 @@ while getopts :-:r:c:n:g:p:ihf flag
             # Long flags
             -)
             case "${OPTARG}" in
-                test) python3 $UPDATE_AVERAGE;;
+                #test) python3 $ADD_DEGREE
+                #exit 0;;
                 undo) cd $CONTENT_FOLDER && chmod -R +w $CONTENT_FOLDER; rm -r *; git add . & git commit -m "reset" && git push origin master;;
                 repo) REPO="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 code) MATRICOLA_CODE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
@@ -24,22 +24,30 @@ while getopts :-:r:c:n:g:p:ihf flag
                 grade) MY_GRADE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 path) GRADES_PATH="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 pull) pullFromGithub;;
+
                 help)
                     printHelp
-                    exit 0;
-                    ;;
+                    exit 0 ;;
+
                 force-reset)
                     forceReset
-                    exit 0;
-                    ;;
+                    exit 0 ;;
+
                 remove)
-                if [[ ${!OPTIND} == "" ]]; then
-                    echo "You need to specify the course name!"
-                else
-                    removeGrade ${!OPTIND}
-                fi
-                ;;
-                course-of-study) echo "todo: course of study"
+                    if [[ ${!OPTIND} == "" ]]; then
+                        echo "You need to specify the course name!"
+                    else
+                        removeGrade ${!OPTIND}
+                    fi
+                    exit 0;;
+
+                degree)
+                    if [[ ${!OPTIND} == "" ]]; then
+                        echo "You need to specify your degree course!"
+                    else
+                        python3 $ADD_DEGREE "${!OPTIND}" && pushToGithub
+                    fi
+                    exit 0;;
 
             esac;;
             # Short flags
@@ -56,9 +64,6 @@ while getopts :-:r:c:n:g:p:ihf flag
             exit 0
             ;;
             f) forceReset
-            exit 0
-            ;;
-            *) printHelp
             exit 0
             ;;
         esac

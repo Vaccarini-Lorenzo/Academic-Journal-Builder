@@ -7,7 +7,7 @@ ARGUMENT_LIST=(
   "add"
   "help"
   "remove"
-  "course-of-study"
+  "degree"
   "undo"
   "test"
 )
@@ -23,7 +23,7 @@ APPEND_GRADE=$CONFIG_FOLDER/appendGrade.py
 INIT_CONTENT=$CONFIG_FOLDER/initContent.py
 REMOVE_GRADE=$CONFIG_FOLDER/removeGrade.py
 UPDATE_AVERAGE=$CONFIG_FOLDER/updateAverage.py
-ADD_STUDY_COURSE=$CONFIG_FOLDER/addStudyCourse.py
+ADD_DEGREE=$CONFIG_FOLDER/addDegree.py
 
 FOLDER_PRESENT=0
 CONFIG_PRESENT=0
