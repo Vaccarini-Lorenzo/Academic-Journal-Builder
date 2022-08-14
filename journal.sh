@@ -21,6 +21,7 @@ while getopts :-:r:c:n:g:p:ihf flag
                 name) COURSE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 grade) MY_GRADE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 path) GRADES_PATH="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
+                pull) pullFromGithub;;
                 help)
                     printHelp
                     exit 0;
@@ -90,8 +91,7 @@ if [[ $GRADES_PATH != "nil" ]] && [[ $COURSE != "nil" ]]; then
     if [[ $REPO == "nil" ]]; then
          printf "You need to add a remote repository first.\nTry academicJ.sh -r <your_repository_link>\n"
     else
-    addRemoteOrigin
-    pullFromGithub
-    buildNewStatsFile && appendNewGrade &&pushToGithub
+    addRemoteOrigin && pullFromGithub
+    buildNewStatsFile; appendNewGrade && pushToGithub
     fi
 fi

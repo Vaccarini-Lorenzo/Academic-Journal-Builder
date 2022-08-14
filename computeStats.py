@@ -1,7 +1,9 @@
 import os
+from os.path import expanduser
 
-# Temporary chdir. This file will be in .academicJ
-os.chdir("/Users/lorenzo/.academicJ/content")
+home = expanduser("~")
+CONTENT_FOLDER=home + "/.aJournal/content"
+os.chdir(CONTENT_FOLDER)
 
 class stats:
     def __init__(self, counters, percentages, myGrade, top, average, averageIgnoringFailed, numStudents):
@@ -121,7 +123,7 @@ def getStats(gradesFile, personCode):
             myGrade = 31
         myGrade = int(myGrade)
         for i, counter in enumerate(counters):
-            if(i + 17 < inputGrade):
+            if(i + 17 < myGrade):
                 betterThan += counter
 
     top = round((1 - betterThan/numStudents) * 100, 3)

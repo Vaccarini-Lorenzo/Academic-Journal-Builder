@@ -1,8 +1,10 @@
 import sys
 import os
+from os.path import expanduser
 
-# Temporary chdir. This file will be in .academicJ
-os.chdir("/Users/lorenzo/.aJournal/content")
+home = expanduser("~")
+CONTENT_FOLDER=home + "/.aJournal/content"
+os.chdir(CONTENT_FOLDER)
 
 courseName = sys.argv[1]
 grade = sys.argv[2]

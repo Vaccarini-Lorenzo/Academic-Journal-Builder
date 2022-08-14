@@ -32,7 +32,10 @@ COURSE="nil"
 GRADES_PATH="nil"
 MY_GRADE="nil"
 
+GRADE_FILE=$CONTENT_FOLDER/grade.txt
+
 printHelp(){
+    
     printf "\n\n"
     printf "        Hello there! This tool is pretty simple: once installed you need to specify your person code (8 \n"
     printf "        ciphers PoliMI ID) and your repository through the flags '-c' or '--code' and '-r' or '--repo'\n"
@@ -137,23 +140,29 @@ addRemoteOrigin(){
 
 buildNewStatsFile(){
     echo "creating the new stats file..."
-    python3 $PRINT_STATS "$COURSE" $GRADES_PATH $PERSON_CODE #> $MY_GRADE
+    python3 $PRINT_STATS "$COURSE" $GRADES_PATH $PERSON_CODE; GRADE=$? && echo "GRADE $GRADE"
 }
 
 # Parses the grades file, updates the main.md file and appends a stats.md file
 appendNewGrade(){
     echo "append the new grade..."
-    python3 $APPEND_GRADE "$COURSE" 30 $REPO
+    # It's sys.exit(-1)
+    if [[ $GRADE == "255" ]]; then
+        GRADE="FAILED"
+    elif [[ $GRADE == 31 ]]; then
+        GRADE="30L"
+    fi
+    python3 $APPEND_GRADE "$COURSE" $GRADE $REPO
 }
 
 pullFromGithub(){
     echo "pulling from github..."
-    cd $CONTENT_FOLDER &&git pull origin master
+    cd $CONTENT_FOLDER && git pull origin master
 }
 
 pushToGithub(){
     echo "pushing to github..."
-    cd $CONTENT_FOLDER && git add . && git commit -m "new grade: $COURSE" && git push origin master
+    cd $CONTENT_FOLDER && git add . && echo "added" && git commit -m "new grade: $COURSE" && echo "committed" && git push origin master && echo "pushed"
 }
 
 forceReset(){
