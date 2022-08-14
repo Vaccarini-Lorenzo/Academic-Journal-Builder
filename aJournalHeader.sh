@@ -34,19 +34,32 @@ MY_GRADE="nil"
 
 printHelp(){
     printf "\n\n"
-    printf "        Hello there! This tool is pretty simple: once installed you need to specify your person code\n"
-    printf "        (8 ciphers PoliMI ID) and your repository through the flags '-c' (code) and '-r' (repository)\n"
+    printf "        Hello there! This tool is pretty simple: once installed you need to specify your person code (8 \n"
+    printf "        ciphers PoliMI ID) and your repository through the flags '-c' or '--code' and '-r' or '--repo'\n"
     printf "        example:\n"
-    printf "            journal.sh -c 1065**** -r 'https://github.com/Vaccarini-Lorenzo/academicJournal.git'\n\n"
-    printf "        Once both your person code and your repo url are saved, you can start adding grades through\n"
-    printf "        the flags '-n' (name of the course) and '-p' (path of the grades list)\n"
+    printf "                   journal.sh -c 1065**** -r 'https://github.com/Vaccarini-Lorenzo/academicJournal.git'\n"
+    printf "                                                    or\n"
+    printf "                 journal.sh --code 1065**** --repo 'https://github.com/Vaccarini-Lorenzo/academicJournal.git'\n\n"
+
+    printf "        Once both your person code and your repo url are saved, you can start adding grades through the flags\n"
+    printf "        '-n' or '--name' and '-p' or '--path' (path to the .txt file containing all the grades)\n"
     printf "        example:\n"
-    printf "                    journal.sh -n 'Advanced Computer Architecture' -p 'Users/lorenzo/Desktop/ACAGrades.txt'\n\n"
-    printf "        At this point, it's all done! Your files are now in your GitHub repository.\n\n"
-    printf "        In case of merge conflicts, just reset your local folder through the '-f' (force-reset) flag.\n"
+    printf "                   journal.sh -n 'Advanced Computer Architecture' -p 'Users/lorenzo/Desktop/ACAGrades.txt'\n"
+    printf "                                                    or\n"
+    printf "                journal.sh --name 'Advanced Computer Architecture' --path 'Users/lorenzo/Desktop/ACAGrades.txt'\n\n"
+
+    printf "        At this point, it's all done! Your files are now in your GitHub repository\n"
+    printf "        To add your course of study to your Academic Journal just use the flag '--course-of-study'\n"
+    printf "        example:\n"
+    printf "                   journal.sh --course-of-study 'Computer Science & Engineering'\n\n"
+    printf "        If you want to remove a grade from your github page just use the '--remove-grade' flag\n"
+    printf "        example:\n"
+    printf "                    journal.sh --remove-grade 'Advanced Computer Architecture'\n\n"
+    printf "        In case of merge conflicts, just reset your local folder through the '-f' or '--force-reset' flag.\n"
     printf "        example:\n"
     printf "                    journal.sh -f\n\n"
     printf "        ATTENTION: This way your local folder will be deleted and restored through a git pull.\n\n\n"
+
 }
 
 # Looking for academicJ folder & config file
