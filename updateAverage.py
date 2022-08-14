@@ -27,7 +27,7 @@ for line in lines:
         else:
             sum += int(tokens[1])
 
-average = sum/counter
+average = round(sum/counter,3)
 
 mainFileOverwite = open("README.md", "w")
 terminator = "\n"
@@ -36,7 +36,7 @@ for line in lines:
     if line[:19] != "### Current average":
         mainFileOverwite.write(line)
     else:
-        newLine = "### Current average: " + str(average)
+        newLine = "### Current average: " + str(average) + terminator
         mainFileOverwite.write(newLine)
 
 mainFileOverwite.close()

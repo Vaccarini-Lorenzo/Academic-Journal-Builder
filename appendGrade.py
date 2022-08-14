@@ -1,6 +1,7 @@
 import sys
 import os
 from os.path import expanduser
+import urllib.parse
 
 home = expanduser("~")
 CONTENT_FOLDER=home + "/.aJournal/content"
@@ -20,7 +21,8 @@ gitSuffix = repo[-4:]
 if gitSuffix == ".git":
     # Remove suffix
     repo = repo[:-4]
-repo = repo + "/blob/master/" + courseName + "Stats.md"
+escapedCourseName = urllib.parse.quote(courseName)
+repo = repo + "/blob/master/" + escapedCourseName + "Stats.md"
 
 if len(sys.argv) == 5:
     print("external link")

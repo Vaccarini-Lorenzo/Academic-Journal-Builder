@@ -12,8 +12,11 @@ home = expanduser("~")
 CONTENT_FOLDER=home + "/.aJournal/content"
 os.chdir(CONTENT_FOLDER)
 
+# Raw formatting for possible path spaces
+filePath = r"{}".format(sys.argv[2])
+
 courseName = sys.argv[1]
-gradesFile = open(sys.argv[2])
+gradesFile = open(filePath)
 matricolaCode = sys.argv[3]
 
 # Get num of students for each grade, average etc...

@@ -18,7 +18,7 @@ while getopts :-:r:c:n:g:p:ihf flag
                 #test) python3 $ADD_DEGREE
                 #exit 0;;
                 undo) cd $CONTENT_FOLDER && chmod -R +w $CONTENT_FOLDER; rm -r *; git add . & git commit -m "reset" && git push origin master;;
-                repo) REPO="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
+                repo) REPO="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 )); REMOTE_ORIGIN_INVALID=1; addRemoteOrigin;;
                 code) MATRICOLA_CODE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 name) COURSE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 grade) MY_GRADE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;

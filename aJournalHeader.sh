@@ -29,6 +29,7 @@ FOLDER_PRESENT=0
 CONFIG_PRESENT=0
 CONTENT_PRESENT=0
 REMOTE_ORIGIN_PRESENT=0
+REMOTE_ORIGIN_INVALID=0
 
 REMOTE_ORIGIN_CONFIG=$CONTENT_FOLDER/.git/config
 REMOTE_ORIGIN_REGEX="url = .*.git"
@@ -136,18 +137,22 @@ addRemoteOrigin(){
             break;
         fi
     done < $REMOTE_ORIGIN_CONFIG
-    if [[ $REMOTE_ORIGIN_PRESENT == 0 ]]; then
+    # If origin is not preset it gets added.
+    # If it's invalid (user changed repo), it gets modified
+    if [[ $REMOTE_ORIGIN_PRESENT == 0 ]] || [[ $REMOTE_ORIGIN_INVALID == 1 ]]; then
         echo "origin added..."
-        cd $CONTENT_FOLDER && git remote add origin $REPO
-        git remote -v
-        printf "\n\n"
+        if [[ $REMOTE_ORIGIN_PRESENT == 1 ]]; then
+            cd $CONTENT_FOLDER && git remote set-url origin $REPO
+        else
+            cd $CONTENT_FOLDER && git remote add origin $REPO
+        fi
+        cd $CONTENT_FOLDER && git remote -v
     fi
 }
 
 buildNewStatsFile(){
     echo "creating the new stats file..."
-    echo "course = $COURSE, path = $GRADES_PATH, matricola = $MATRICOLA_CODE"
-    python3 $PRINT_STATS "$COURSE" $GRADES_PATH $MATRICOLA_CODE; GRADE=$?
+    python3 $PRINT_STATS "$COURSE" "$GRADES_PATH" $MATRICOLA_CODE; GRADE=$?
 }
 
 # Parses the grades file, updates the main.md file and appends a stats.md file
