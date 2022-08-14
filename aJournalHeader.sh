@@ -9,6 +9,7 @@ ARGUMENT_LIST=(
   "remove"
   "course-of-study"
   "undo"
+  "test"
 )
 
 CONFIG_FOLDER=$HOME/.aJournal
@@ -21,6 +22,8 @@ PRINT_STATS=$CONFIG_FOLDER/printStats.py
 APPEND_GRADE=$CONFIG_FOLDER/appendGrade.py
 INIT_CONTENT=$CONFIG_FOLDER/initContent.py
 REMOVE_GRADE=$CONFIG_FOLDER/removeGrade.py
+UPDATE_AVERAGE=$CONFIG_FOLDER/updateAverage.py
+ADD_STUDY_COURSE=$CONFIG_FOLDER/addStudyCourse.py
 
 FOLDER_PRESENT=0
 CONFIG_PRESENT=0
@@ -179,6 +182,14 @@ removeGrade(){
     echo "removing grade..."
     echo "$1"
     cd $CONTENT_FOLDER && chmod -R +w $CONTENT_FOLDER && rm $1Stats.md
-    python3 $REMOVE_GRADE $1
+    python3 $REMOVE_GRADE $1 && python3 $UPDATE_AVERAGE
     pushToGithub && echo "$1 removed!"
+}
+
+updateAverage(){
+    python3 $UPDATE_AVERAGE
+}
+
+addCourse(){
+    python3 $ADD_STUDY_COURSE
 }

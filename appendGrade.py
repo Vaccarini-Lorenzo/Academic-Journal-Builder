@@ -25,5 +25,5 @@ repo = repo + "/blob/master/" + courseName + "Stats.md"
 if len(sys.argv) == 5:
     print("external link")
 
-print(courseName + " | " + grade + " | [stats](" + repo +")|" )
+print(courseName + " | " + grade + " | [stats](" + repo +") | None |" )
 mainFile.close()

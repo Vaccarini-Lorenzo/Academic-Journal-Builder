@@ -16,6 +16,7 @@ while getopts :-:r:c:n:g:p:ihf flag
             # Long flags
             -)
             case "${OPTARG}" in
+                test) python3 $UPDATE_AVERAGE;;
                 undo) cd $CONTENT_FOLDER && chmod -R +w $CONTENT_FOLDER; rm -r *; git add . & git commit -m "reset" && git push origin master;;
                 repo) REPO="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 code) MATRICOLA_CODE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
@@ -99,6 +100,7 @@ if [[ $GRADES_PATH != "nil" ]] && [[ $COURSE != "nil" ]]; then
          printf "You need to add a remote repository first.\nTry academicJ.sh -r <your_repository_link>\n"
     else
     addRemoteOrigin && pullFromGithub
-    buildNewStatsFile; appendNewGrade && pushToGithub
+    # Not in conjunction since the printStats.py returns the grade as sys.exit value
+    buildNewStatsFile; appendNewGrade && updateAverage && pushToGithub
     fi
 fi
