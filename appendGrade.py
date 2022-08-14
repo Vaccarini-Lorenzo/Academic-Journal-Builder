@@ -12,20 +12,25 @@ grade = sys.argv[2]
 repo = sys.argv[3]
 mainFile = open("README.md", 'a')
 
-# Setting the stats file as stdout
-# From now on every print will write on the stats file
-sys.stdout = mainFile
+# Checks if a link is required or not
 
-# Last 4 chars
-gitSuffix = repo[-4:]
-if gitSuffix == ".git":
-    # Remove suffix
-    repo = repo[:-4]
-escapedCourseName = urllib.parse.quote(courseName)
-repo = repo + "/blob/master/" + escapedCourseName + "Stats.md"
+statsString =  " | [stats]("
 
-if len(sys.argv) == 5:
-    print("external link")
+if len(sys.argv) == 4:
+    # Last 4 chars
+    gitSuffix = repo[-4:]
+    if gitSuffix == ".git":
+        # Remove suffix
+        repo = repo[:-4]
+    escapedCourseName = urllib.parse.quote(courseName)
+    repo = repo + "/blob/master/" + escapedCourseName + "Stats.md"
+    statsString = statsString + repo + ")"
+else:
+    statsString = " | None"
 
-print(courseName + " | " + grade + " | [stats](" + repo +") | None |" )
+
+#if len(sys.argv) == 5:
+    #print("external link")
+
+mainFile.write(courseName + " | " + grade + statsString + " | None |\n" )
 mainFile.close()

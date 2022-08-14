@@ -15,10 +15,10 @@ mainFile.close()
 mainFileOverwrite = open("README.md", "w")
 
 for line in lines:
-    if line[:10] != "### Degree":
+    if line[:19] != "### Course of study":
         mainFileOverwrite.write(line)
     else:
-        newLine = "### Degree: " + degree + "\n"
+        newLine = "### Course of study: " + degree + "\n"
         mainFileOverwrite.write(newLine)
 
 mainFileOverwrite.close()

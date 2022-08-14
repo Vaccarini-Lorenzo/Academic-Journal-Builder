@@ -23,6 +23,7 @@ while getopts :-:r:c:n:g:p:ihf flag
                 name) COURSE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 grade) MY_GRADE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 path) GRADES_PATH="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
+                grade) MY_GRADE="${!OPTIND}";;
                 pull) pullFromGithub;;
 
                 help)
@@ -41,11 +42,11 @@ while getopts :-:r:c:n:g:p:ihf flag
                     fi
                     exit 0;;
 
-                degree)
+                course-of-study)
                     if [[ ${!OPTIND} == "" ]]; then
                         echo "You need to specify your degree course!"
                     else
-                        python3 $ADD_DEGREE "${!OPTIND}" && pushToGithub
+                        python3 $ADD_STUDY_COURSE "${!OPTIND}" && pushToGithub
                     fi
                     exit 0;;
 
@@ -100,12 +101,16 @@ printf "$MATRICOLA_CODE\n$REPO\n" > $CONFIG_FILE
 
 # Checks if the user asked to add a grade.
 # If a repo is already given a remote origin gets set and the grade gets added
-if [[ $GRADES_PATH != "nil" ]] && [[ $COURSE != "nil" ]]; then
+if [[ $COURSE != "nil" ]]; then
     if [[ $REPO == "nil" ]]; then
          printf "You need to add a remote repository first.\nTry academicJ.sh -r <your_repository_link>\n"
     else
-    addRemoteOrigin && pullFromGithub
-    # Not in conjunction since the printStats.py returns the grade as sys.exit value
-    buildNewStatsFile; appendNewGrade && updateAverage && pushToGithub
+        addRemoteOrigin && pullFromGithub
+        if [[ $GRADES_PATH != "nil" ]]; then
+            # Not in conjunction since the printStats.py returns the grade as sys.exit value
+            buildNewStatsFile; appendNewGrade && updateAverage && pushToGithub
+        elif [[ $MY_GRADE != 'nil' ]]; then
+            appendNewGrade 'no_stats' && updateAverage && pushToGithub
+        fi
     fi
 fi

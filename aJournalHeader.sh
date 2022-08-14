@@ -7,7 +7,7 @@ ARGUMENT_LIST=(
   "add"
   "help"
   "remove"
-  "degree"
+  "course-of-study"
   "undo"
   "test"
 )
@@ -23,7 +23,7 @@ APPEND_GRADE=$CONFIG_FOLDER/appendGrade.py
 INIT_CONTENT=$CONFIG_FOLDER/initContent.py
 REMOVE_GRADE=$CONFIG_FOLDER/removeGrade.py
 UPDATE_AVERAGE=$CONFIG_FOLDER/updateAverage.py
-ADD_DEGREE=$CONFIG_FOLDER/addDegree.py
+ADD_STUDY_COURSE=$CONFIG_FOLDER/addStudyCourse.py
 
 FOLDER_PRESENT=0
 CONFIG_PRESENT=0
@@ -152,19 +152,27 @@ addRemoteOrigin(){
 
 buildNewStatsFile(){
     echo "creating the new stats file..."
-    python3 $PRINT_STATS "$COURSE" "$GRADES_PATH" $MATRICOLA_CODE; GRADE=$?
+    python3 $PRINT_STATS "$COURSE" "$GRADES_PATH" $MATRICOLA_CODE; MY_GRADE=$?
 }
 
 # Parses the grades file, updates the main.md file and appends a stats.md file
 appendNewGrade(){
     echo "append the new grade..."
     # It's sys.exit(-1)
-    if [[ $GRADE == "255" ]]; then
-        GRADE="FAILED"
-    elif [[ $GRADE == 31 ]]; then
-        GRADE="30L"
+    if [[ $MY_GRADE == "255" ]]; then
+        MY_GRADE="FAILED"
+    elif [[ $MY_GRADE == 31 ]]; then
+        MY_GRADE="30L"
     fi
-    python3 $APPEND_GRADE "$COURSE" $GRADE $REPO
+    # If a user doesn't have or doesn't want the stats link he can just insert
+    # the grade. In that case, the "stats" link won't be added.
+    # The 5th argument to the appendGrade.py script will be checked and if present
+    # a stats link won't be attached
+    if [[ $1 != "" ]]; then
+        python3 $APPEND_GRADE "$COURSE" $MY_GRADE $REPO $1
+    else
+        python3 $APPEND_GRADE "$COURSE" $MY_GRADE $REPO
+    fi
 }
 
 pullFromGithub(){
@@ -185,7 +193,6 @@ forceReset(){
 
 removeGrade(){
     echo "removing grade..."
-    echo "$1"
     cd $CONTENT_FOLDER && chmod -R +w $CONTENT_FOLDER && rm $1Stats.md
     python3 $REMOVE_GRADE $1 && python3 $UPDATE_AVERAGE
     pushToGithub && echo "$1 removed!"
