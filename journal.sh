@@ -17,7 +17,7 @@ while getopts :-:r:c:n:g:p:ihf flag
             -)
             case "${OPTARG}" in
                 repo) REPO="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
-                code) PERSON_CODE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
+                code) MATRICOLA_CODE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 name) COURSE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 grade) MY_GRADE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 path) GRADES_PATH="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
@@ -36,12 +36,12 @@ while getopts :-:r:c:n:g:p:ihf flag
             esac;;
             # Short flags
             r) REPO=${OPTARG};;
-            c) PERSON_CODE=${OPTARG};;
+            c) MATRICOLA_CODE=${OPTARG};;
             n) COURSE=${OPTARG};;
             g) MY_GRADE=${OPTARG};;
             p) GRADES_PATH=${OPTARG};;
             i) python3 $INIT_CONTENT
-            echo "exit..."
+            echo "Installed!"
             exit 0
             ;;
             h) printHelp
@@ -63,7 +63,7 @@ while getopts :-:r:c:n:g:p:ihf flag
 #   CONTENT_PRESENT
 checkEnvironment
 
-# If the config file is present PERSON_CODE and REPO are stored.
+# If the config file is present MATRICOLA_CODE and REPO are stored.
 # Otherwise a empty config file gets created.
 if [[ $CONFIG_PRESENT == 1 ]]; then
     readConfigFile
@@ -83,7 +83,7 @@ fi
 
 
 # Updates config file
-printf "$PERSON_CODE\n$REPO\n" > $CONFIG_FILE
+printf "$MATRICOLA_CODE\n$REPO\n" > $CONFIG_FILE
 
 # Checks if the user asked to add a grade.
 # If a repo is already given a remote origin gets set and the grade gets added

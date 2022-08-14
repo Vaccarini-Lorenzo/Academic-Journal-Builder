@@ -26,7 +26,7 @@ REMOTE_ORIGIN_PRESENT=0
 REMOTE_ORIGIN_CONFIG=$CONTENT_FOLDER/.git/config
 REMOTE_ORIGIN_REGEX="url = .*.git"
 
-PERSON_CODE="nil"
+MATRICOLA_CODE="nil"
 REPO="nil"
 COURSE="nil"
 GRADES_PATH="nil"
@@ -35,10 +35,10 @@ MY_GRADE="nil"
 GRADE_FILE=$CONTENT_FOLDER/grade.txt
 
 printHelp(){
-    
+
     printf "\n\n"
-    printf "        Hello there! This tool is pretty simple: once installed you need to specify your person code (8 \n"
-    printf "        ciphers PoliMI ID) and your repository through the flags '-c' or '--code' and '-r' or '--repo'\n"
+    printf "        Hello there! This tool is pretty simple: once installed you need to specify your matricola code\n"
+    printf "        (6 ciphers PoliMI ID) and your repository through the flags '-c' or '--code' and '-r' or '--repo'\n"
     printf "        example:\n"
     printf "                   journal.sh -c 1065**** -r 'https://github.com/Vaccarini-Lorenzo/academicJournal.git'\n"
     printf "                                                    or\n"
@@ -90,8 +90,8 @@ readConfigFile(){
     N=0;
     while read -r line;
     do
-        if [[ $N == 0 ]] && [[ $PERSON_CODE == "nil" ]]; then
-            PERSON_CODE=$line;
+        if [[ $N == 0 ]] && [[ $MATRICOLA_CODE == "nil" ]]; then
+            MATRICOLA_CODE=$line;
         elif [[ $N == 1 ]] && [[ $REPO == "nil" ]]; then
             REPO=$line;
         fi
@@ -104,8 +104,7 @@ buildContentFolder(){
     echo "build the content folder..."
     mkdir $CONTENT_FOLDER
     touch $CONTENT_MAIN
-    echo "git init..."
-    cd $CONTENT_FOLDER && git init
+    cd $CONTENT_FOLDER && git init --quiet && echo "git folder has been initializated..."
 }
 
 # Build the config folder
@@ -115,7 +114,7 @@ buildConfigFolder(){
     mkdir $CONTENT_FOLDER
     touch $CONFIG_FILE
     touch $CONTENT_MAIN
-    cd $CONTENT_FOLDER && git init
+    cd $CONTENT_FOLDER && git init --quiet && echo "git folder has been initializated..."
 }
 
 addRemoteOrigin(){
@@ -131,7 +130,7 @@ addRemoteOrigin(){
         fi
     done < $REMOTE_ORIGIN_CONFIG
     if [[ $REMOTE_ORIGIN_PRESENT == 0 ]]; then
-        echo "remote origin not found: origin added..."
+        echo "origin added..."
         cd $CONTENT_FOLDER && git remote add origin $REPO
         git remote -v
         printf "\n\n"
@@ -140,7 +139,8 @@ addRemoteOrigin(){
 
 buildNewStatsFile(){
     echo "creating the new stats file..."
-    python3 $PRINT_STATS "$COURSE" $GRADES_PATH $PERSON_CODE; GRADE=$? && echo "GRADE $GRADE"
+    echo "course = $COURSE, path = $GRADES_PATH, matricola = $MATRICOLA_CODE"
+    python3 $PRINT_STATS "$COURSE" $GRADES_PATH $MATRICOLA_CODE; GRADE=$?
 }
 
 # Parses the grades file, updates the main.md file and appends a stats.md file
@@ -157,16 +157,16 @@ appendNewGrade(){
 
 pullFromGithub(){
     echo "pulling from github..."
-    cd $CONTENT_FOLDER && git pull origin master
+    cd $CONTENT_FOLDER && addRemoteOrigin && git pull --quiet origin master && echo "git pull: Up to date..."
 }
 
 pushToGithub(){
     echo "pushing to github..."
-    cd $CONTENT_FOLDER && git add . && echo "added" && git commit -m "new grade: $COURSE" && echo "committed" && git push origin master && echo "pushed"
+    cd $CONTENT_FOLDER && git add . && echo "added..." && git commit -m "new grade: $COURSE" && echo "committed..." && git push --quiet origin master && echo "pushed!"
 }
 
 forceReset(){
     echo "forcing reset..."
-    cd $CONTENT_FOLDER && rm -r .git | cd $CONTENT_FOLDER && rm *
-    git init && addRemoteOrigin && pullFromGithub
+    cd $CONTENT_FOLDER && chmod -R +w $CONTENT_FOLDER && rm -r .*; cd $CONTENT_FOLDER && rm *
+    git init --quiet && addRemoteOrigin && pullFromGithub
 }

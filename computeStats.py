@@ -16,7 +16,7 @@ class stats:
         self.numStudents = numStudents
 
 
-def getStats(gradesFile, personCode):
+def getStats(gradesFile, matricolaCode):
     tmpFile = open("tmp.txt", "w")
 
     # Messy implementation, just for demo
@@ -55,7 +55,7 @@ def getStats(gradesFile, personCode):
     for line in tmpFile.readlines():
         l = line.split("\t")
 
-        if l[0] == personCode and l[1] != "RIMANDATO\n" and l[1] != "RIFIUTATO\n" and l[1] != "ASSENTE\n":
+        if l[0] == matricolaCode and l[1] != "RIMANDATO\n" and l[1] != "RIFIUTATO\n" and l[1] != "ASSENTE\n":
             myGrade = l[1]
 
         if l[1] == "RIMANDATO\n":
