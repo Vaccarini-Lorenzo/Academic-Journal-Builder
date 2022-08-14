@@ -1,7 +1,7 @@
 import os
 
 # Temporary chdir. This file will be in .academicJ
-os.chdir("/Users/lorenzo/.aJournal/content")
+os.chdir("/Users/lorenzo/.academicJ/content")
 
 class stats:
     def __init__(self, counters, percentages, myGrade, top, average, averageIgnoringFailed, numStudents):

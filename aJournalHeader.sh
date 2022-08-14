@@ -120,7 +120,6 @@ addRemoteOrigin(){
         git remote -v
         printf "\n\n"
     fi
-
 }
 
 buildNewStatsFile(){

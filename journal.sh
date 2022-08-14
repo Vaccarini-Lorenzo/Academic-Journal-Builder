@@ -10,9 +10,30 @@
 # a: Add Course
 # p: Grade file path
 # i: Init (used in the installation phase)
-while getopts r:c:n:g:p:ihf flag
+while getopts :-:r:c:n:g:p:ihf flag
     do
         case "${flag}" in
+            # Long flags
+            -)
+            case "${OPTARG}" in
+                repo) REPO="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
+                code) PERSON_CODE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
+                name) COURSE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
+                grade) MY_GRADE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
+                path) GRADES_PATH="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
+                help)
+                    printHelp
+                    exit 0;
+                    ;;
+                force-reset)
+                    forceReset
+                    exit 0;
+                    ;;
+                remove-grade) echo "todo: remove instance";;
+                course-of-study) echo "todo: course of study"
+
+            esac;;
+            # Short flags
             r) REPO=${OPTARG};;
             c) PERSON_CODE=${OPTARG};;
             n) COURSE=${OPTARG};;
