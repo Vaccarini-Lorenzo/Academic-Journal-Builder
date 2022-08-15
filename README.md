@@ -4,9 +4,10 @@
 
 ![intro](content/intro.gif)
 
-# What do you need
+# What you need
 - #### A github repository to store your Academic Journal
 - #### A valid SSH key for your GitHub account
+- #### Python 3
 
 # Installation
 
