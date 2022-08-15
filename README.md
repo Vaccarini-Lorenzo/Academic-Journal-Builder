@@ -29,5 +29,19 @@
 
 ### 3. That's it! Just add your first grade. You can either:
 #### &nbsp;&nbsp;&nbsp;&nbsp; 3.1 Add only the grade specifying the numeric value of the grade and the course name with the flags `--name` and `--grade`
-![courseOfStudy](content/courseOfStudy.gif)
+![addGrade](content/addGrade.gif)
 #### &nbsp;&nbsp;&nbsp;&nbsp; 3.2 Add a grade file and the course name with the flags a `--name` and `--path`. This way a CourseNameStats.md file with the exam statistics will be created
+![addFile](content/addFile.gif)
+
+# How to format the grade file
+
+### The expected txt file is in the form
+
+Matricola | Grade | ... | ... |
+:--- | :--- | :--- | :--- |
+
+### With each colon divided by a tab `\t`
+
+# How to obtain the grade file
+
+### Just go to Servizi Online > Consultazione Esito Esami, click on the grade you want to register, access the grade list and copy-paste it on a file.txt
