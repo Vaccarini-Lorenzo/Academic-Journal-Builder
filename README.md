@@ -2,7 +2,7 @@
 
 ### This simple command line tool allows to automate the whole process of grade journaling, managing a Github repository to store and document your academic journey.
 
-![introGif](content/introGif.gif)
+![intro](content/intro.gif)
 
 # What do you need
 - #### A github repository to store your Academic Journal
