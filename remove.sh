@@ -13,4 +13,5 @@ mv $CONFIG_FOLDER/appendGrade.py $PWD
 mv $CONFIG_FOLDER/removeGrade.py $PWD
 mv $CONFIG_FOLDER/updateAverage.py $PWD
 mv $CONFIG_FOLDER/addStudyCourse.py $PWD
+mv $CONFIG_FOLDER/addExternal.py $PWD
 chmod -R +w $CONFIG_FOLDER && rm -r $CONFIG_FOLDER && echo "Removed!"

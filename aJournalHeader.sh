@@ -10,6 +10,7 @@ ARGUMENT_LIST=(
   "course-of-study"
   "undo"
   "test"
+  "external"
 )
 
 CONFIG_FOLDER=$HOME/.aJournal
@@ -24,6 +25,7 @@ INIT_CONTENT=$CONFIG_FOLDER/initContent.py
 REMOVE_GRADE=$CONFIG_FOLDER/removeGrade.py
 UPDATE_AVERAGE=$CONFIG_FOLDER/updateAverage.py
 ADD_STUDY_COURSE=$CONFIG_FOLDER/addStudyCourse.py
+ADD_EXTERNAL=$CONFIG_FOLDER/addExternal.py
 
 FOLDER_PRESENT=0
 CONFIG_PRESENT=0

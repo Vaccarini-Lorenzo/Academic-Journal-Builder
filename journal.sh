@@ -50,6 +50,19 @@ while getopts :-:r:c:n:g:p:ihf flag
                     fi
                     exit 0;;
 
+                external)
+                if [[ ${!OPTIND} == "" ]]; then
+                    echo "You need to specify the course name"
+                else
+                    COURSE=${!OPTIND};
+                    OPTIND=$(( $OPTIND + 1 ));
+                fi
+                if [[ ${!OPTIND} == "" ]]; then
+                    echo "You need to specify the external link"
+                else
+                  python3 $ADD_EXTERNAL "$COURSE" "${!OPTIND}" && pushToGithub
+                fi
+                exit 0;;
             esac;;
             # Short flags
             r) REPO=${OPTARG};;

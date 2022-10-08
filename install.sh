@@ -12,3 +12,4 @@ mv appendGrade.py $CONFIG_FOLDER
 mv removeGrade.py $CONFIG_FOLDER
 mv updateAverage.py $CONFIG_FOLDER
 mv addStudyCourse.py $CONFIG_FOLDER
+mv addExternal.py $CONFIG_FOLDER
