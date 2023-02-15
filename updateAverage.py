@@ -24,10 +24,14 @@ for line in lines:
             sum += 30
         elif grade == "FAILED":
             sum += 0
+        elif grade == "RIMANDATO":
+            sum += 0
         else:
             sum += int(tokens[1])
 
 average = round(sum/counter,3)
+print("\n\nnew average:")
+print(average)
 
 mainFileOverwite = open("README.md", "w")
 terminator = "\n"

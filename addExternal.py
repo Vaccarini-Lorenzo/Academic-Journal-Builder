@@ -21,8 +21,8 @@ for line in lines:
     if len(splitted) > 0 and splitted[0] != courseName:
         mainFileOverwrite.write(line)
     else:
-        parsedLink = "[External link](" + externalLink + ")"
-        newLine = splitted[0] + " |" + splitted[1] + " |" + splitted[2] + " |" + parsedLink + " |"
+        parsedLink = " [External link](" + externalLink + ")"
+        newLine = splitted[0] + " |" + splitted[1] + " |" + splitted[2] + " |" + parsedLink + " |\n"
         mainFileOverwrite.write(newLine)
 
 mainFileOverwrite.close()
