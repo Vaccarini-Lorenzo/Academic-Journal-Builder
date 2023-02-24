@@ -4,6 +4,7 @@ ARGUMENT_LIST=(
   "repo"
   "code"
   "path"
+  "weight"
   "add"
   "help"
   "remove"
@@ -41,36 +42,52 @@ REPO="nil"
 COURSE="nil"
 GRADES_PATH="nil"
 MY_GRADE="nil"
+CFU="nil"
 
 GRADE_FILE=$CONTENT_FOLDER/grade.txt
 
 printHelp(){
 
     printf "\n\n"
+    printf "     +  Intro\n"
     printf "        Hello there! This tool is pretty simple: once installed you need to specify your matricola code\n"
     printf "        (6 ciphers PoliMI ID) and your repository through the flags '-c' or '--code' and '-r' or '--repo'\n"
     printf "        example:\n"
-    printf "                   journal.sh -c ****** -r 'https://github.com/Vaccarini-Lorenzo/academicJournal.git'\n"
+    printf "                 journal.sh -c ****** -r 'git@github.com:Vaccarini-Lorenzo/Academic-Journal.git'\n"
     printf "                                                    or\n"
-    printf "                 journal.sh --code ****** --repo 'https://github.com/Vaccarini-Lorenzo/academicJournal.git'\n\n"
-
+    printf "                 journal.sh --code ****** --repo 'git@github.com:Vaccarini-Lorenzo/Academic-Journal.git'\n\n\n"
+    printf "     +  How to insert grades\n"
     printf "        Once both your person code and your repo url are saved, you can start adding grades through the flags\n"
-    printf "        '-n' or '--name' and '-p' or '--path' (path to the .txt file containing all the grades)\n"
+    printf "        '-n' or '--name' (course name), '-p' or '--path' (path to the .txt file containing all the grades) and '-w' or\n"
+    printf "        '--weight' (number of CFU)\n"
     printf "        example:\n"
-    printf "                   journal.sh -n 'Advanced Computer Architecture' -p 'Users/lorenzo/Desktop/ACAGrades.txt'\n"
+    printf "             journal.sh -n 'Advanced Computer Architecture' -p 'Users/lorenzo/Desktop/ACAGrades.txt' -w '5'\n"
     printf "                                                    or\n"
-    printf "                journal.sh --name 'Advanced Computer Architecture' --path 'Users/lorenzo/Desktop/ACAGrades.txt'\n\n"
-
-    printf "        At this point, it's all done! Your files are now in your GitHub repository\n"
+    printf "             journal.sh --name 'Advanced Computer Architecture' --path 'Users/lorenzo/Desktop/ACAGrades.txt' --weight '5'\n\n"
+    printf "        At this point, it's all done! Your files are now in your GitHub repository\n\n\n"
+    printf "     +  How to insert grades without a grade file\n"
+    printf "        If you don't have access to a file containing all the grades you can simply add your personal grade\n"
+    printf "        with the flag '-g' or '--grade' (statistics won't be computed):\n"
+    printf "        example:\n"
+    printf "             journal.sh -n 'Advanced Computer Architecture' -g '28' -w '5'\n"
+    printf "                                                    or\n"
+    printf "             journal.sh --name 'Advanced Computer Architecture' --grade '28' --weight '5'\n\n\n"
+    printf "     +  How to add your course of study\n"
     printf "        To add your course of study to your Academic Journal just use the flag '--course-of-study'\n"
     printf "        example:\n"
-    printf "                   journal.sh --course-of-study 'Computer Science & Engineering'\n\n"
+    printf "             journal.sh --course-of-study 'Computer Science & Engineering'\n\n\n"
+    printf "     +  How to add an external link\n"
+    printf "        To add an external link to a course, use the flag '--external'\n"
+    printf "        example:\n"
+    printf "             journal.sh --external 'Advanced Computer Architecture' 'https://yourlink.com'\n\n\n"
+    printf "     +  How to remove a grade\n"
     printf "        If you want to remove a grade from your github page just use the '--remove' flag\n"
     printf "        example:\n"
-    printf "                    journal.sh --remove-grade 'Advanced Computer Architecture'\n\n"
-    printf "        In case of merge conflicts, just reset your local folder through the '-f' or '--force-reset' flag.\n"
+    printf "             journal.sh --remove 'Advanced Computer Architecture'\n\n\n"
+    printf "     +  How to solve conflicts or unexpected behaviours\n"
+    printf "        In case of conflicts, just reset your local folder through the '-f' or '--force-reset' flag.\n"
     printf "        example:\n"
-    printf "                    journal.sh -f\n\n"
+    printf "             journal.sh -f\n\n"
     printf "        ATTENTION: This way your local folder will be deleted and restored through a git pull.\n\n\n"
 
 }
@@ -171,9 +188,9 @@ appendNewGrade(){
     # The 5th argument to the appendGrade.py script will be checked and if present
     # a stats link won't be attached
     if [[ $1 != "" ]]; then
-        python3 $APPEND_GRADE "$COURSE" $MY_GRADE $REPO $1
+        python3 $APPEND_GRADE "$COURSE" $MY_GRADE $CFU $REPO $1
     else
-        python3 $APPEND_GRADE "$COURSE" $MY_GRADE $REPO
+        python3 $APPEND_GRADE "$COURSE" $MY_GRADE $CFU $REPO
     fi
 }
 

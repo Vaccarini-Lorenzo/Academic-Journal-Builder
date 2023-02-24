@@ -22,7 +22,7 @@ for line in lines:
         mainFileOverwrite.write(line)
     else:
         parsedLink = " [External link](" + externalLink + ")"
-        newLine = splitted[0] + " |" + splitted[1] + " |" + splitted[2] + " |" + parsedLink + " |\n"
+        newLine = splitted[0] + " |" + splitted[1] + " |" + splitted[2] + " |" + splitted[3] + " |" + parsedLink + " |\n"
         mainFileOverwrite.write(newLine)
 
 mainFileOverwrite.close()

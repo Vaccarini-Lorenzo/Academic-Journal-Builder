@@ -9,7 +9,7 @@
 # a: Add Course
 # p: Grade file path
 # i: Init (used in the installation phase)
-while getopts :-:r:c:n:g:p:ihf flag
+while getopts :-:r:c:n:g:p:w:ihf flag
     do
         case "${flag}" in
             # Long flags
@@ -22,8 +22,8 @@ while getopts :-:r:c:n:g:p:ihf flag
                 code) MATRICOLA_CODE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 name) COURSE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 grade) MY_GRADE="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
+                weight) CFU="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
                 path) GRADES_PATH="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ));;
-                grade) MY_GRADE="${!OPTIND}";;
                 pull) pullFromGithub;;
 
                 help)
@@ -70,6 +70,7 @@ while getopts :-:r:c:n:g:p:ihf flag
             n) COURSE=${OPTARG};;
             g) MY_GRADE=${OPTARG};;
             p) GRADES_PATH=${OPTARG};;
+            w) CFU=${OPTARG};;
             i) python3 $INIT_CONTENT
             echo "Installed!"
             exit 0
@@ -82,6 +83,10 @@ while getopts :-:r:c:n:g:p:ihf flag
             ;;
         esac
     done
+
+if [ "$#" == 0 ]; then
+    printHelp
+fi
 
 # Checks if the environment is all set.
 # The following flags get set:
@@ -119,11 +124,15 @@ if [[ $COURSE != "nil" ]]; then
          printf "You need to add a remote repository first.\nTry academicJ.sh -r <your_repository_link>\n"
     else
         addRemoteOrigin && pullFromGithub
-        if [[ $GRADES_PATH != "nil" ]]; then
-            # Not in conjunction since the printStats.py returns the grade as sys.exit value
-            buildNewStatsFile; appendNewGrade && updateAverage && pushToGithub
-        elif [[ $MY_GRADE != 'nil' ]]; then
-            appendNewGrade 'no_stats' && updateAverage && pushToGithub
+        if [[ $CFU == "nil" ]]; then
+            printf "You need to specify the number of CFUs. Use the flag -w or --weight\n"
+        else
+            if [[ $GRADES_PATH != "nil" ]]; then
+                # Not in conjunction since the printStats.py returns the grade as sys.exit value
+                buildNewStatsFile; appendNewGrade && updateAverage && pushToGithub
+            elif [[ $MY_GRADE != 'nil' ]]; then
+                appendNewGrade 'no_stats' && updateAverage && pushToGithub
+            fi
         fi
     fi
 fi

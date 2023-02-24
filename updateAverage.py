@@ -10,29 +10,27 @@ mainFile = open("README.md", "r")
 lines = mainFile.readlines()
 mainFile.close()
 
-sum = 0
-counter = 0
+gradeSum = 0
+cfuSum = 0
 
 for line in lines:
     #if len(line)>4:
         #print(line[:19])
     tokens = line.split(" | ")
-    if len(tokens) == 4 and tokens[0] != "| Course" and tokens[0] != ":---":
-        counter += 1
+    if len(tokens) == 5 and tokens[0] != "| Course" and tokens[0] != ":---":
         grade = tokens[1]
+        cfu = int(tokens[2])
+        cfuSum += cfu
         if grade == "30L":
-            sum += 30
+            gradeSum += 30 * cfu
         elif grade == "FAILED":
-            sum += 0
+            gradeSum += 0
         elif grade == "RIMANDATO":
-            sum += 0
+            gradeSum += 0
         else:
-            sum += int(tokens[1])
+            gradeSum += int(tokens[1]) * cfu
 
-average = round(sum/counter,3)
-print("\n\nnew average:")
-print(average)
-
+average = round(gradeSum/(cfuSum),3)
 mainFileOverwite = open("README.md", "w")
 terminator = "\n"
 
